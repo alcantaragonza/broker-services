@@ -69,7 +69,7 @@ const findSchema = (method, path) => {
 
 const isMutation = (method) => ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method);
 
-router.all('/*', async (req, res) => {
+router.all('/{*splat}', async (req, res) => {
   const apiPath = req.path;
   const method  = req.method;
 
