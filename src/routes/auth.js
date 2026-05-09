@@ -126,4 +126,30 @@ router.post(
   },
 );
 
+router.post(
+  "/refresh",
+  authLimiter,
+  async (req, res) => {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return error(res, "Token de autorización requerido", 401);
+    }
+
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+        ignoreExpiration: true,
+      });
+      const newToken = jwt.sign(
+        { id: decoded.id, email: decoded.email, rol: decoded.rol },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN || "8h" },
+      );
+      return success(res, { token: newToken }, 200, "Token renovado");
+    } catch (err) {
+      return error(res, "Token inválido", 401);
+    }
+  },
+);
+
 module.exports = router;
