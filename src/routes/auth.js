@@ -78,7 +78,6 @@ router.post(
 router.post(
   "/register",
   authLimiter,
-  validate(authSchemas.register),
   async (req, res) => {
     try {
       const { rol } = req.body;
