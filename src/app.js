@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
   res.json({ success: true, message: 'Broker Pedidos Now activo', timestamp: new Date().toISOString() });
 });
 
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api', authMiddleware, apiRouter);
 app.use('/api', apiRouter);
 
