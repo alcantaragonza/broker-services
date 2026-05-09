@@ -11,7 +11,7 @@ const router = Router();
 
 // Mapa de roles - (pendiente) endpoint de registro
 const ROLE_REGISTER_ROUTES = {
-  admin: "/api/auth/register",
+  admin: "/api/admin/register",
   restaurante: "/api/restaurantes/register",
   repartidor: "/api/couriers/register",
   cliente: "/api/client/register",
@@ -19,7 +19,7 @@ const ROLE_REGISTER_ROUTES = {
 
 // IDs numéricos si el body envía número (pendiente)
 const ROLE_REGISTER_ROUTES_BY_ID = {
-  1: "/api/auth/register",
+  1: "/api/admin/register",
   2: "/api/restaurantes/register",
   3: "/api/couriers/register",
   4: "/api/client/register",
