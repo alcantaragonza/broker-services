@@ -9,7 +9,6 @@ const { authLimiter } = require("../middlewares/rateLimiter");
 
 const router = Router();
 
-// Mapa de roles - (pendiente) endpoint de registro
 const ROLE_REGISTER_ROUTES = {
   admin: "/admin/register",
   restaurante: "/restaurants/register",
@@ -17,7 +16,6 @@ const ROLE_REGISTER_ROUTES = {
   cliente: "/client/register",
 };
 
-// IDs numéricos si el body envía número (pendiente)
 const ROLE_REGISTER_ROUTES_BY_ID = {
   1: "/admin/register",
   2: "/restaurants/register",
@@ -44,7 +42,6 @@ router.post(
 
       if (!userData) return error(res, "Credenciales inválidas", 401);
 
-      // Asegurarse que el payload del JWT siempre tenga valores definidos
       const id = userData.id ?? userData.id_usuario;
       const rol = userData.rol ?? userData.role;
 
@@ -67,9 +64,9 @@ router.post(
       if (err.code === "ECONNABORTED")
         return error(res, "Servicio no responde", 504);
 
-      if (err.response?.status === 401 || err.response?.status === 404) {
+      if (err.response?.status === 401 || err.response?.status === 404)
         return error(res, "Credenciales inválidas", 401);
-      }
+
       return error(res, "Error al autenticar", 500);
     }
   },
@@ -80,15 +77,20 @@ router.post(
   authLimiter,
   async (req, res) => {
     try {
-      const { rol } = req.body;
+      const rawRol = req.body.rol;
 
-      // Resuelve la ruta según el rol (acepta nombre o ID)
+      // Normalizar: si es string, quitar espacios y pasar a minúsculas
+      const rolNormalizado =
+        typeof rawRol === "string" ? rawRol.trim().toLowerCase() : rawRol;
+
+      // Buscar ruta por nombre o por ID (acepta número o string numérico)
       const registerPath =
-        ROLE_REGISTER_ROUTES[rol] || ROLE_REGISTER_ROUTES_BY_ID[rol];
+        ROLE_REGISTER_ROUTES[rolNormalizado] ||
+        ROLE_REGISTER_ROUTES_BY_ID[Number(rawRol)] ||
+        ROLE_REGISTER_ROUTES_BY_ID[rawRol];
 
-      if (!registerPath) {
+      if (!registerPath)
         return error(res, "Rol no válido o no especificado", 400);
-      }
 
       const adminUrl = resolveServiceUrl("administracion");
       if (!adminUrl)
@@ -100,14 +102,19 @@ router.post(
         { timeout: 8000 },
       );
 
+      console.log("Respuesta del servicio de administración:", response.data);
+
       const userData = response.data?.data || response.data;
 
+      // Validar payload antes de firmar el JWT
+      const id = userData.id ?? userData.id_usuario;
+      const rol = userData.rol ?? userData.role;
+
+      if (!id || !rol)
+        return error(res, "Respuesta del servicio incompleta", 502);
+
       const token = jwt.sign(
-        {
-          id: userData.id || userData.id_usuario,
-          email: userData.email,
-          rol: userData.rol || userData.role,
-        },
+        { id, email: userData.email, rol },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN || "8h" },
       );
@@ -119,8 +126,11 @@ router.post(
         "Usuario registrado exitosamente",
       );
     } catch (err) {
+      console.error("Error en /register:", err.response?.data || err.message);
       if (err.response?.status === 409)
         return error(res, "El usuario ya existe", 409);
+      if (err.code === "ECONNABORTED")
+        return error(res, "Servicio no responde", 504);
       return error(res, "Error al registrar usuario", 500);
     }
   },
@@ -131,9 +141,8 @@ router.post(
   authLimiter,
   async (req, res) => {
     const authHeader = req.headers["authorization"];
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith("Bearer "))
       return error(res, "Token de autorización requerido", 401);
-    }
 
     const token = authHeader.split(" ")[1];
     try {
