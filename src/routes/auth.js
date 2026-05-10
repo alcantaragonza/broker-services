@@ -11,18 +11,18 @@ const router = Router();
 
 // Mapa de roles - (pendiente) endpoint de registro
 const ROLE_REGISTER_ROUTES = {
-  admin: "/api/admin/register",
-  restaurante: "/api/restaurants/register",
-  repartidor: "/api/couriers/register",
-  cliente: "/api/client/register",
+  admin: "/admin/register",
+  restaurante: "/restaurants/register",
+  repartidor: "/couriers/register",
+  cliente: "/client/register",
 };
 
 // IDs numéricos si el body envía número (pendiente)
 const ROLE_REGISTER_ROUTES_BY_ID = {
-  1: "/api/admin/register",
-  2: "/api/restaurants/register",
-  3: "/api/couriers/register",
-  4: "/api/client/register",
+  1: "/admin/register",
+  2: "/restaurants/register",
+  3: "/couriers/register",
+  4: "/client/register",
 };
 
 router.post(
@@ -36,7 +36,7 @@ router.post(
         return error(res, "Servicio de administración no disponible", 503);
 
       const response = await axios.post(
-        `${adminUrl}/api/auth/login`,
+        `${adminUrl}/auth/login`,
         req.body,
         { timeout: 8000 },
       );
