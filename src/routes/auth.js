@@ -20,7 +20,7 @@ const ROLE_REGISTER_ROUTES = {
 // IDs numéricos si el body envía número (pendiente)
 const ROLE_REGISTER_ROUTES_BY_ID = {
   1: "/api/admin/register",
-  2: "/api/restaurantes/register",
+  2: "/api/restaurants/register",
   3: "/api/couriers/register",
   4: "/api/client/register",
 };
