@@ -11,17 +11,17 @@ console.log(">>> auth.js cargado - versión con logs activos");
 const router = Router();
 
 const ROLE_REGISTER_ROUTES = {
-  admin: "/admin/register",
-  restaurante: "/restaurants/register",
-  repartidor: "/couriers/register",
-  cliente: "/client/register",
+  admin: "/api/admin/register",
+  restaurante: "/api/restaurants/register",
+  repartidor: "/api/couriers/register",
+  cliente: "/api/client/register",
 };
 
 const ROLE_REGISTER_ROUTES_BY_ID = {
-  1: "/admin/register",
-  2: "/restaurants/register",
-  3: "/couriers/register",
-  4: "/client/register",
+  1: "/api/admin/register",
+  2: "/api/restaurants/register",
+  3: "/api/couriers/register",
+  4: "/api/client/register",
 };
 
 router.post(
