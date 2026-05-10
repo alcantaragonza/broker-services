@@ -35,7 +35,7 @@ router.post(
         return error(res, "Servicio de administración no disponible", 503);
 
       const response = await axios.post(
-        `${adminUrl}/auth/login`,
+        `${adminUrl}/api/auth/login`,
         req.body,
         { timeout: 8000 },
       );
