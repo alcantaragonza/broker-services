@@ -12,7 +12,7 @@ const router = Router();
 // Mapa de roles - (pendiente) endpoint de registro
 const ROLE_REGISTER_ROUTES = {
   admin: "/api/admin/register",
-  restaurante: "/api/restaurantes/register",
+  restaurante: "/api/restaurants/register",
   repartidor: "/api/couriers/register",
   cliente: "/api/client/register",
 };
