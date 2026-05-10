@@ -7,6 +7,7 @@ const { auth: authSchemas } = require("../validators/schemas");
 const { success, error } = require("../utils/responses");
 const { authLimiter } = require("../middlewares/rateLimiter");
 
+console.log(">>> auth.js cargado - versión con logs activos");
 const router = Router();
 
 const ROLE_REGISTER_ROUTES = {
@@ -96,6 +97,7 @@ router.post(
       if (!adminUrl)
         return error(res, "Servicio de administración no disponible", 503);
 
+      console.log("REGISTER ADMIN URL:", `${adminUrl}${registerPath}`);
       const response = await axios.post(
         `${adminUrl}${registerPath}`,
         req.body,
