@@ -379,7 +379,6 @@ const chats = {
     enabled: z.boolean().optional(),
     timezone: z.string().optional()
   }),
-
   // Conversaciones
   crearConversacion: z.object({
     requester_type: z.string().min(1),
@@ -390,7 +389,6 @@ const chats = {
     subject: z.string().optional(),
     inactivity_minutes: z.number().int().positive().optional()
   }),
-
   // Mensajes (mismo endpoint para USER y AGENT)
   enviarMensaje: z.object({
     sender_role: z.enum(['USER', 'AGENT']),
@@ -398,13 +396,11 @@ const chats = {
     content: z.string().min(1),
     client_message_id: z.string().optional()
   }),
-
   // Asignacion de agente
   asignarAgente: z.object({
     agent_ext_id: z.string().min(1),
     agent_display_name: z.string().optional()
   }),
-
   // Cambio de estado / cierre
   cambiarEstado: z.object({
     new_status: z.enum([
@@ -416,12 +412,12 @@ const chats = {
     changed_by_ext_id: z.string().min(1),
     reason: z.string().optional()
   }),
-
   // Jobs internos
   cerrarPorInactividad: z.object({
     limit: z.number().int().positive().optional()
   })
 };
+
 
 
 module.exports = { restaurantes, logistica, paqueteria, auth, cobros, chats };
