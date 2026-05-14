@@ -364,4 +364,64 @@ const cobros = {
     ),
 };
 
-module.exports = { restaurantes, logistica, paqueteria, auth, cobros };
+const chats = {
+  // Horarios de atencion
+  crearHorario: z.object({
+    day_of_week: z.number().int().min(0).max(6),
+    start_time: z.string().regex(/^\d{2}:\d{2}:\d{2}$/),
+    end_time: z.string().regex(/^\d{2}:\d{2}:\d{2}$/),
+    enabled: z.boolean().optional(),
+    timezone: z.string().optional()
+  }),
+  actualizarHorario: z.object({
+    start_time: z.string().regex(/^\d{2}:\d{2}:\d{2}$/).optional(),
+    end_time: z.string().regex(/^\d{2}:\d{2}:\d{2}$/).optional(),
+    enabled: z.boolean().optional(),
+    timezone: z.string().optional()
+  }),
+
+  // Conversaciones
+  crearConversacion: z.object({
+    requester_type: z.string().min(1),
+    requester_ext_id: z.string().min(1),
+    requester_display_name: z.string().optional(),
+    case_type: z.string().min(1),
+    case_reference: z.string().optional(),
+    subject: z.string().optional(),
+    inactivity_minutes: z.number().int().positive().optional()
+  }),
+
+  // Mensajes (mismo endpoint para USER y AGENT)
+  enviarMensaje: z.object({
+    sender_role: z.enum(['USER', 'AGENT']),
+    sender_ext_id: z.string().min(1),
+    content: z.string().min(1),
+    client_message_id: z.string().optional()
+  }),
+
+  // Asignacion de agente
+  asignarAgente: z.object({
+    agent_ext_id: z.string().min(1),
+    agent_display_name: z.string().optional()
+  }),
+
+  // Cambio de estado / cierre
+  cambiarEstado: z.object({
+    new_status: z.enum([
+      'RESOLVED_NO_SOLUTION',
+      'RESOLVED_COUPON',
+      'RESOLVED_REFUND',
+      'CLOSED_MANUAL'
+    ]),
+    changed_by_ext_id: z.string().min(1),
+    reason: z.string().optional()
+  }),
+
+  // Jobs internos
+  cerrarPorInactividad: z.object({
+    limit: z.number().int().positive().optional()
+  })
+};
+
+
+module.exports = { restaurantes, logistica, paqueteria, auth, cobros, chats };
