@@ -8,6 +8,7 @@ const {
   logistica: lSchemas,
   paqueteria: pSchemas,
   cobros: cSchemas,
+  chat: chSchemas,
 } = require("../validators/schemas");
 const { error } = require("../utils/responses");
 const logger = require("../utils/logger");
