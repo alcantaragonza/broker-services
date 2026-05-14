@@ -73,6 +73,21 @@ const SCHEMA_MAP = {
   "POST:/api/payments/calculate": cSchemas.calcularTotal,
   "POST:/api/payments": cSchemas.crearPago,
   "POST:/api/wallet/pay-pending": cSchemas.pagarPendiente,
+
+  //CHAT SERVICIO AL CLIENTE
+  // Horarios de atencion
+  "POST:/api/availability": cSchemas.crearHorario,
+  "PATCH:/api/availability/:id": cSchemas.actualizarHorario,
+  // Conversaciones
+  "POST:/api/conversations": cSchemas.crearConversacion,
+  // Mensajes
+  "POST:/api/conversations/:id/messages": cSchemas.enviarMensaje,
+  // Asignacion de agente (URL pendiente de confirmar con backend)
+  "PATCH:/api/conversations/:id/agent": cSchemas.asignarAgente,
+  // Cambio de estado / cierre
+  "PATCH:/api/conversations/:id/status": cSchemas.cambiarEstado,
+  // Jobs internos
+  "POST:/api/internal/conversations/close-timeouts": cSchemas.cerrarPorInactividad
 };
 
 const SERVICE_MAP = {
