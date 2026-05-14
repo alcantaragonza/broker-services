@@ -279,12 +279,7 @@ const auth = {
 
 };
 
-const { z } = require("zod");
-
-// ─────────────────────────────────────────────
-//  Fragmentos reutilizables
-// ─────────────────────────────────────────────
-
+// Cobros
 /** Item de cálculo (sin campos de creación de pago) */
 const calcItemSchema = z.object({
   product_id: z.string().uuid(),
