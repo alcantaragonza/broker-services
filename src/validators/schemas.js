@@ -135,33 +135,33 @@ const logistica = {
 };
 
 const shipmentStatusEnum = z.enum(['pending', 'assigned', 'in_transit', 'delivered', 'cancelled']);
-const chargeTypeEnum     = z.enum(['cash', 'card']);
-const courierStatusEnum  = z.enum(['Disponible', 'Ocupado', 'En descanso']);
-const packageSizeEnum    = z.enum(['Pequeño', 'Mediano', 'Grande']);
+const chargeTypeEnum = z.enum(['cash', 'card']);
+const courierStatusEnum = z.enum(['Disponible', 'Ocupado', 'En descanso']);
+const packageSizeEnum = z.enum(['Pequeño', 'Mediano', 'Grande']);
 
 const paqueteria = {
 
   //USERS
   crearUsuario: z.object({
-    name:   z.string().min(1),
+    name: z.string().min(1),
     status: z.boolean().optional()
   }),
 
   actualizarUsuario: z.object({
-    name:   z.string().min(1).optional(),
+    name: z.string().min(1).optional(),
     status: z.boolean().optional()
   }),
 
   //COURIERS
   crearCourier: z.object({
-    name:       z.string().min(1),
-    status:     z.boolean().optional(),
+    name: z.string().min(1),
+    status: z.boolean().optional(),
     statusName: courierStatusEnum.optional()
   }),
 
   actualizarCourier: z.object({
-    name:       z.string().min(1).optional(),
-    status:     z.boolean().optional(),
+    name: z.string().min(1).optional(),
+    status: z.boolean().optional(),
     statusName: courierStatusEnum.optional()
   }),
 
@@ -171,98 +171,98 @@ const paqueteria = {
 
   // ADDRESSE
   crearDireccion: z.object({
-    idUser:    z.number().int().positive(),
-    latitude:  z.number(),
+    idUser: z.number().int().positive(),
+    latitude: z.number(),
     longitude: z.number(),
-    address:   z.string().min(1)
+    address: z.string().min(1)
   }),
 
   actualizarDireccion: z.object({
-    idUser:    z.number().int().positive().optional(),
-    latitude:  z.number().optional(),
+    idUser: z.number().int().positive().optional(),
+    latitude: z.number().optional(),
     longitude: z.number().optional(),
-    address:   z.string().min(1).optional()
+    address: z.string().min(1).optional()
   }),
 
   //PRICES
   crearPrecio: z.object({
-    price:    z.number().positive(),
+    price: z.number().positive(),
     criteria: z.string().min(1),
-    status:   z.boolean().optional()
+    status: z.boolean().optional()
   }),
 
   actualizarPrecio: z.object({
-    price:    z.number().positive().optional(),
+    price: z.number().positive().optional(),
     criteria: z.string().min(1).optional(),
-    status:   z.boolean().optional()
+    status: z.boolean().optional()
   }),
 
   //SHIPMENTS
   crearEnvio: z.object({
     deliveryInstructions: z.string().optional(),
-    total:                z.number().positive(),
-    shipmentStatus:       shipmentStatusEnum,
-    chargeType:           chargeTypeEnum,
+    total: z.number().positive(),
+    shipmentStatus: shipmentStatusEnum,
+    chargeType: chargeTypeEnum,
     estimatedDeliveryTime: z.string().min(1),
-    senderId:             z.number().int().positive(),
-    receiverId:           z.number().int().positive(),
-    courierId:            z.number().int().positive(),
-    invoiceSeries:        z.string().min(1),
-    status:               z.boolean().optional()
+    senderId: z.number().int().positive(),
+    receiverId: z.number().int().positive(),
+    courierId: z.number().int().positive(),
+    invoiceSeries: z.string().min(1),
+    status: z.boolean().optional()
   }),
 
   actualizarEnvio: z.object({
-    deliveryInstructions:  z.string().optional(),
-    total:                 z.number().positive().optional(),
-    shipmentStatus:        shipmentStatusEnum.optional(),
-    chargeType:            chargeTypeEnum.optional(),
+    deliveryInstructions: z.string().optional(),
+    total: z.number().positive().optional(),
+    shipmentStatus: shipmentStatusEnum.optional(),
+    chargeType: chargeTypeEnum.optional(),
     estimatedDeliveryTime: z.string().optional(),
-    senderId:              z.number().int().positive().optional(),
-    receiverId:            z.number().int().positive().optional(),
-    courierId:             z.number().int().positive().optional(),
-    invoiceSeries:         z.string().optional(),
-    status:                z.boolean().optional()
+    senderId: z.number().int().positive().optional(),
+    receiverId: z.number().int().positive().optional(),
+    courierId: z.number().int().positive().optional(),
+    invoiceSeries: z.string().optional(),
+    status: z.boolean().optional()
   }),
 
   // PACKAGES
   crearPaquete: z.object({
-    idShipment:  z.number().int().positive(),
+    idShipment: z.number().int().positive(),
     description: z.string().min(1),
-    size:        packageSizeEnum,
-    weight:      z.number().positive(),
-    subtotal:    z.number().min(0),
-    status:      z.boolean().optional()
+    size: packageSizeEnum,
+    weight: z.number().positive(),
+    subtotal: z.number().min(0),
+    status: z.boolean().optional()
   }),
 
   actualizarPaquete: z.object({
-    idShipment:  z.number().int().positive().optional(),
+    idShipment: z.number().int().positive().optional(),
     description: z.string().min(1).optional(),
-    size:        packageSizeEnum.optional(),
-    weight:      z.number().positive().optional(),
-    subtotal:    z.number().min(0).optional(),
-    status:      z.boolean().optional()
+    size: packageSizeEnum.optional(),
+    weight: z.number().positive().optional(),
+    subtotal: z.number().min(0).optional(),
+    status: z.boolean().optional()
   }),
 
   //COURIER STATUS TYPES
   crearTipoEstado: z.object({
-    name:        z.string().min(1),
+    name: z.string().min(1),
     description: z.string().min(1)
   }),
 
   actualizarTipoEstado: z.object({
-    name:        z.string().min(1).optional(),
+    name: z.string().min(1).optional(),
     description: z.string().optional()
   }),
 
   //COURIER STATUSES
   crearRegistroEstado: z.object({
     idCourier: z.number().int().positive(),
-    idStatus:  z.number().int().positive()
+    idStatus: z.number().int().positive()
   }),
 
   actualizarRegistroEstado: z.object({
     idCourier: z.number().int().positive(),
-    idStatus:  z.number().int().positive()
+    idStatus: z.number().int().positive()
   })
 };
 
@@ -276,6 +276,92 @@ const auth = {
     email: z.string().email(),
     password: z.string().min(6)
   })
+
 };
 
-module.exports = { restaurantes, logistica, paqueteria, auth };
+const { z } = require("zod");
+
+// ─────────────────────────────────────────────
+//  Fragmentos reutilizables
+// ─────────────────────────────────────────────
+
+/** Item de cálculo (sin campos de creación de pago) */
+const calcItemSchema = z.object({
+  product_id: z.string().uuid(),
+  product_name: z.string().min(1),
+  quantity: z.number().int().positive(),
+  unit_price: z.number().positive(),
+  item_discount: z.number().min(0).optional().default(0),
+  is_combo: z.boolean().optional().default(false),
+});
+
+/** Item completo al crear un pago */
+const paymentItemSchema = z.object({
+  product_id: z.string().uuid(),
+  external_product_id: z.string().optional(),
+  product_name: z.string().min(1),
+  quantity: z.number().int().positive(),
+  unit_price: z.number().positive(),
+  item_discount: z.number().min(0).optional().default(0),
+  is_combo: z.boolean().optional().default(false),
+});
+
+// ─────────────────────────────────────────────
+//  Schemas de Cobros  (cSchemas)
+// ─────────────────────────────────────────────
+
+const cobros = {
+
+  /**
+   * POST /api/payments/calculate
+   * Calcula el total de un pedido antes de crear el pago.
+   */
+  calcularTotal: z.object({
+    items: z.array(calcItemSchema).min(1),
+    product_discounts: z.number().min(0).optional().default(0),
+    coupon_discount: z.number().min(0).optional().default(0),
+    service_fee: z.number().min(0).optional().default(0),
+    tip_amount: z.number().min(0).optional().default(0),
+  }),
+
+  /**
+   * POST /api/payments
+   * Crea un pago nuevo (CARD_CREDIT, CASH, u otros métodos).
+   */
+  crearPago: z.object({
+    customer_id: z.string().uuid(),
+    courier_id: z.string().uuid(),
+    business_id: z.string().uuid(),
+    delivery_address_id: z.string().uuid(),
+    reservation_id: z.string().min(1),
+    currency_code: z.string().length(3),                  // ISO-4217 e.g. "GTQ"
+    payment_method_code: z.enum(["CARD_CREDIT", "CARD_DEBIT", "CASH"]),
+    product_discounts: z.number().min(0).optional().default(0),
+    coupon_discount: z.number().min(0).optional().default(0),
+    service_fee: z.number().min(0).optional().default(0),
+    courier_earned_fee: z.number().min(0).optional().default(0),
+    approved_extra_fee: z.number().min(0).optional().default(0),
+    tip_amount: z.number().min(0).optional().default(0),
+    items: z.array(paymentItemSchema).min(1),
+    idempotency_key: z.string().min(1),
+  }),
+
+  /**
+   * POST /api/wallet/pay-pending
+   * Salda una deuda pendiente en efectivo.
+   * Acepta identificar la transacción por transactionId O por orderId
+   * (al menos uno de los dos debe estar presente).
+   */
+  pagarPendiente: z
+    .object({
+      courierId: z.string().uuid(),
+      transactionId: z.string().uuid().optional(),
+      orderId: z.string().uuid().optional(),
+    })
+    .refine(
+      (data) => data.transactionId !== undefined || data.orderId !== undefined,
+      { message: "Debes proporcionar transactionId o orderId" }
+    ),
+};
+
+module.exports = { restaurantes, logistica, paqueteria, auth, cobros };
