@@ -6,6 +6,7 @@ const worker = require('../queue/worker');
 const {
   restaurantes: rSchemas,
   logistica: lSchemas,
+  paqueteria: pSchemas,
 } = require("../validators/schemas");
 const { error } = require("../utils/responses");
 const logger = require("../utils/logger");
@@ -13,6 +14,7 @@ const logger = require("../utils/logger");
 const router = Router();
 
 const SCHEMA_MAP = {
+  // RESTAURANTES
   "POST:/restaurantes": rSchemas.crear,
   "PUT:/restaurantes/:id": rSchemas.actualizar,
   "PATCH:/restaurantes/:id/disponibilidad": rSchemas.disponibilidad,
@@ -29,6 +31,7 @@ const SCHEMA_MAP = {
   "POST:/restaurantes/:id/pedidos/:pid/detalles": rSchemas.agregarItemPedido,
   "POST:/restaurantes/:id/pedidos/:pid/cancelacion/cancelar":
     rSchemas.cancelarPedido,
+  // LOGISTICA
   "POST:/logistica/entregas": lSchemas.crearEntrega,
   "PUT:/logistica/entregas/:id": lSchemas.actualizarEntrega,
   "PATCH:/logistica/entregas/:id/estado": lSchemas.cambiarEstadoEntrega,
@@ -38,6 +41,32 @@ const SCHEMA_MAP = {
   "DELETE:/logistica/asignaciones/entrega/:id": lSchemas.desasignarRepartidor,
   "POST:/logistica/incidencias": lSchemas.crearIncidencia,
   "PUT:/logistica/incidencias/:id": lSchemas.actualizarIncidencia,
+  // PAQUETERIA
+  //USERS (/paqueteria/users
+  'POST:/paqueteria/users': pSchemas.crearUsuario,
+  'PUT:/paqueteria/users/:id': pSchemas.actualizarUsuario,
+  //COURIERS (/paqueteria/couriers
+  'POST:/paqueteria/couriers': pSchemas.crearCourier,
+  'PUT:/paqueteria/couriers/:id': pSchemas.actualizarCourier,
+  'PUT:/paqueteria/couriers/:id/status': pSchemas.cambiarEstadoCourier,
+  //ADDRESSES (/paqueteria/addresses
+  'POST:/paqueteria/addresses': pSchemas.crearDireccion,
+  'PUT:/paqueteria/addresses/:id': pSchemas.actualizarDireccion,
+  //PRICES (/paqueteria/prices
+  'POST:/paqueteria/prices': pSchemas.crearPrecio,
+  'PUT:/paqueteria/prices/:id': pSchemas.actualizarPrecio,
+  //SHIPMENTS (/paqueteria/shipments
+  'POST:/paqueteria/shipments': pSchemas.crearEnvio,
+  'PUT:/paqueteria/shipments/:id': pSchemas.actualizarEnvio,
+  //PACKAGES (/paqueteria/packages
+  'POST:/paqueteria/packages': pSchemas.crearPaquete,
+  'PUT:/paqueteria/packages/:id': pSchemas.actualizarPaquete,
+  //COURIER STATUS TYPES (/paqueteria/courier-status-types
+  'POST:/paqueteria/courier-status-types': pSchemas.crearTipoEstado,
+  'PUT:/paqueteria/courier-status-types/:id': pSchemas.actualizarTipoEstado,
+  //COURIER STATUSES (/paqueteria/courier-statuses
+  'POST:/paqueteria/courier-statuses': pSchemas.crearRegistroEstado,
+  'PUT:/paqueteria/courier-statuses/:id': pSchemas.actualizarRegistroEstado,
 };
 
 const SERVICE_MAP = {

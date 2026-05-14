@@ -134,6 +134,138 @@ const logistica = {
   })
 };
 
+const shipmentStatusEnum = z.enum(['pending', 'assigned', 'in_transit', 'delivered', 'cancelled']);
+const chargeTypeEnum     = z.enum(['cash', 'card']);
+const courierStatusEnum  = z.enum(['Disponible', 'Ocupado', 'En descanso']);
+const packageSizeEnum    = z.enum(['Pequeño', 'Mediano', 'Grande']);
+
+const paqueteria = {
+
+  //USERS
+  crearUsuario: z.object({
+    name:   z.string().min(1),
+    status: z.boolean().optional()
+  }),
+
+  actualizarUsuario: z.object({
+    name:   z.string().min(1).optional(),
+    status: z.boolean().optional()
+  }),
+
+  //COURIERS
+  crearCourier: z.object({
+    name:       z.string().min(1),
+    status:     z.boolean().optional(),
+    statusName: courierStatusEnum.optional()
+  }),
+
+  actualizarCourier: z.object({
+    name:       z.string().min(1).optional(),
+    status:     z.boolean().optional(),
+    statusName: courierStatusEnum.optional()
+  }),
+
+  cambiarEstadoCourier: z.object({
+    statusName: courierStatusEnum
+  }),
+
+  // ADDRESSE
+  crearDireccion: z.object({
+    idUser:    z.number().int().positive(),
+    latitude:  z.number(),
+    longitude: z.number(),
+    address:   z.string().min(1)
+  }),
+
+  actualizarDireccion: z.object({
+    idUser:    z.number().int().positive().optional(),
+    latitude:  z.number().optional(),
+    longitude: z.number().optional(),
+    address:   z.string().min(1).optional()
+  }),
+
+  //PRICES
+  crearPrecio: z.object({
+    price:    z.number().positive(),
+    criteria: z.string().min(1),
+    status:   z.boolean().optional()
+  }),
+
+  actualizarPrecio: z.object({
+    price:    z.number().positive().optional(),
+    criteria: z.string().min(1).optional(),
+    status:   z.boolean().optional()
+  }),
+
+  //SHIPMENTS
+  crearEnvio: z.object({
+    deliveryInstructions: z.string().optional(),
+    total:                z.number().positive(),
+    shipmentStatus:       shipmentStatusEnum,
+    chargeType:           chargeTypeEnum,
+    estimatedDeliveryTime: z.string().min(1),
+    senderId:             z.number().int().positive(),
+    receiverId:           z.number().int().positive(),
+    courierId:            z.number().int().positive(),
+    invoiceSeries:        z.string().min(1),
+    status:               z.boolean().optional()
+  }),
+
+  actualizarEnvio: z.object({
+    deliveryInstructions:  z.string().optional(),
+    total:                 z.number().positive().optional(),
+    shipmentStatus:        shipmentStatusEnum.optional(),
+    chargeType:            chargeTypeEnum.optional(),
+    estimatedDeliveryTime: z.string().optional(),
+    senderId:              z.number().int().positive().optional(),
+    receiverId:            z.number().int().positive().optional(),
+    courierId:             z.number().int().positive().optional(),
+    invoiceSeries:         z.string().optional(),
+    status:                z.boolean().optional()
+  }),
+
+  // PACKAGES
+  crearPaquete: z.object({
+    idShipment:  z.number().int().positive(),
+    description: z.string().min(1),
+    size:        packageSizeEnum,
+    weight:      z.number().positive(),
+    subtotal:    z.number().min(0),
+    status:      z.boolean().optional()
+  }),
+
+  actualizarPaquete: z.object({
+    idShipment:  z.number().int().positive().optional(),
+    description: z.string().min(1).optional(),
+    size:        packageSizeEnum.optional(),
+    weight:      z.number().positive().optional(),
+    subtotal:    z.number().min(0).optional(),
+    status:      z.boolean().optional()
+  }),
+
+  //COURIER STATUS TYPES
+  crearTipoEstado: z.object({
+    name:        z.string().min(1),
+    description: z.string().min(1)
+  }),
+
+  actualizarTipoEstado: z.object({
+    name:        z.string().min(1).optional(),
+    description: z.string().optional()
+  }),
+
+  //COURIER STATUSES
+  crearRegistroEstado: z.object({
+    idCourier: z.number().int().positive(),
+    idStatus:  z.number().int().positive()
+  }),
+
+  actualizarRegistroEstado: z.object({
+    idCourier: z.number().int().positive(),
+    idStatus:  z.number().int().positive()
+  })
+};
+
 const auth = {
   login: z.object({
     email: z.string().email(),
@@ -146,4 +278,4 @@ const auth = {
   })
 };
 
-module.exports = { restaurantes, logistica, auth };
+module.exports = { restaurantes, logistica, paqueteria, auth };
