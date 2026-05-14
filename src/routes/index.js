@@ -7,6 +7,7 @@ const {
   restaurantes: rSchemas,
   logistica: lSchemas,
   paqueteria: pSchemas,
+  cobros: cSchemas,
 } = require("../validators/schemas");
 const { error } = require("../utils/responses");
 const logger = require("../utils/logger");
@@ -67,6 +68,11 @@ const SCHEMA_MAP = {
   //COURIER STATUSES (/paqueteria/courier-statuses
   'POST:/paqueteria/courier-statuses': pSchemas.crearRegistroEstado,
   'PUT:/paqueteria/courier-statuses/:id': pSchemas.actualizarRegistroEstado,
+
+  //COBROS
+  "POST:/api/payments/calculate": cSchemas.calcularTotal,
+  "POST:/api/payments": cSchemas.crearPago,
+  "POST:/api/wallet/pay-pending": cSchemas.pagarPendiente,
 };
 
 const SERVICE_MAP = {
