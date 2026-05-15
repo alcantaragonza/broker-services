@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { resolveServiceUrl } = require("../config");
+const { resolveServiceUrl, services } = require("../config");
 const { safeForward } = require("../services/forwarder");
 const { enqueue } = require('../queue/producer');
 const worker = require('../queue/worker');
@@ -9,6 +9,7 @@ const {
   paqueteria: pSchemas,
   cobros: cSchemas,
   chats: chSchemas,
+  chatAutomatizado: caSchemas,
 } = require("../validators/schemas");
 const { error } = require("../utils/responses");
 const logger = require("../utils/logger");
@@ -88,7 +89,19 @@ const SCHEMA_MAP = {
    // Cambio de estado / cierre
   "PATCH:/api/conversations/:id/status": chSchemas.cambiarEstado,
    // Jobs internos
-  "POST:/api/internal/conversations/close-timeouts": chSchemas.cerrarPorInactividad
+  "POST:/api/internal/conversations/close-timeouts": chSchemas.cerrarPorInactividad,
+
+  //CHAT AUTOMATIZADO (soporte)
+  // Sesiones
+  "POST:/soporte/session":                caSchemas.iniciarSesion,
+  "POST:/soporte/session/message":        caSchemas.enviarMensaje,
+  // FAQs
+  "POST:/soporte/faqs":                   caSchemas.crearFaq,
+  "PATCH:/soporte/faqs/:id":              caSchemas.actualizarFaq,
+  // Solicitudes de soporte
+  "PATCH:/soporte/support/:id/status":    caSchemas.actualizarSolicitud,
+  // Escalaciones
+  "PATCH:/soporte/escalation/:id/status": caSchemas.actualizarEscalacion,
 };
 
 const SERVICE_MAP = {
@@ -169,7 +182,9 @@ router.all("/{*splat}", async (req, res) => {
   if (!serviceBaseUrl)
     return error(res, `Servicio '${serviceName}' no configurado`, 503);
 
-  const targetUrl = `${serviceBaseUrl}/api${apiPath}`;
+  const serviceConfig = services[serviceName];
+  const targetPath = serviceConfig?.pathTransform ? serviceConfig.pathTransform(apiPath) : `/api${apiPath}`;
+  const targetUrl = `${serviceBaseUrl}${targetPath}`;
 
   if (isMutation(method) && req.body && Object.keys(req.body).length > 0) {
     const schema = findSchema(method, apiPath);

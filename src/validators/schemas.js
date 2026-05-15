@@ -415,4 +415,60 @@ const chats = {
 
 
 
-module.exports = { restaurantes, logistica, paqueteria, auth, cobros, chats };
+const categoryTypeEnum = z.enum([
+  'cliente',
+  'repartidor',
+  'restaurante',
+  'farmacia',
+  'supermercado',
+  'paqueteria',
+]);
+
+const faqStatusEnum = z.enum(['active', 'inactive', 'archive']);
+
+const chatAutomatizado = {
+
+  // POST /soporte/session
+  iniciarSesion: z.object({
+    id_usuario: z.number().int().positive(),
+    user_type: z.enum(['cliente', 'repartidor', 'negocio']),
+  }),
+
+  // POST /soporte/session/message
+  enviarMensaje: z.object({
+    id_session: z.number().int().positive(),
+    input: z.union([z.string().min(1), z.number()]),
+    input_type: z.string().optional().nullable(),
+  }),
+
+  // POST /soporte/faqs
+  crearFaq: z.object({
+    category_type: categoryTypeEnum,
+    question: z.string().min(1),
+    answer: z.string().min(1),
+    faq_status: faqStatusEnum.optional(),
+  }),
+
+  // PATCH /soporte/faqs/:id
+  actualizarFaq: z.object({
+    category_type: categoryTypeEnum.optional(),
+    question: z.string().min(1).optional(),
+    answer: z.string().min(1).optional(),
+    faq_status: faqStatusEnum.optional(),
+  }).refine(
+    (data) => Object.keys(data).length > 0,
+    { message: 'Se requiere al menos un campo para actualizar' }
+  ),
+
+  // PATCH /soporte/support/:id/status
+  actualizarSolicitud: z.object({
+    request_status: z.enum(['pendiente', 'en_proceso', 'resuelto', 'cancelado']),
+  }),
+
+  // PATCH /soporte/escalation/:id/status
+  actualizarEscalacion: z.object({
+    handoff_status: z.enum(['pendiente', 'recibido', 'en_atencion', 'cerrado']),
+  }),
+};
+
+module.exports = { restaurantes, logistica, paqueteria, auth, cobros, chats, chatAutomatizado };
