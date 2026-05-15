@@ -10,18 +10,23 @@ const { globalLimiter } = require('./middlewares/rateLimiter');
 const authMiddleware = require('./middlewares/auth');
 const authRoutes = require('./routes/auth');
 const apiRouter = require('./routes/index');
+const { setupSwagger } = require('./docs/swagger');
 
 require('./queue/worker');
 
 const app = express();
 app.set('trust proxy', 1);
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
+
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined', { stream: { write: (msg) => logger.info(msg.trim()) } }));
@@ -30,6 +35,9 @@ app.use(globalLimiter);
 app.get('/health', (req, res) => {
   res.json({ success: true, message: 'Broker Pedidos Now activo', timestamp: new Date().toISOString() });
 });
+
+// Documentación Swagger
+setupSwagger(app);
 
 app.use('/api/auth', authRoutes);
 // app.use('/api', authMiddleware, apiRouter);
