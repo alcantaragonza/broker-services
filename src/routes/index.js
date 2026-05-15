@@ -109,24 +109,24 @@ const SCHEMA_MAP = {
   'PUT:/paqueteria/courier-statuses/:id': pSchemas.actualizarRegistroEstado,
 
   //COBROS
-  "POST:/api/payments/calculate": cSchemas.calcularTotal,
-  "POST:/api/payments": cSchemas.crearPago,
-  "POST:/api/wallet/pay-pending": cSchemas.pagarPendiente,
+  "POST:/payments/calculate": cSchemas.calcularTotal,
+  "POST:/payments": cSchemas.crearPago,
+  "POST:/wallet/pay-pending": cSchemas.pagarPendiente,
 
   //CHAT SERVICIO AL CLIENTE
     // Horarios de atencion
-  "POST:/api/availability": chSchemas.crearHorario,
-  "PATCH:/api/availability/:id": chSchemas.actualizarHorario,
+  "POST:/availability": chSchemas.crearHorario,
+  "PATCH:/availability/:id": chSchemas.actualizarHorario,
    // Conversaciones
-  "POST:/api/conversations": chSchemas.crearConversacion,
+  "POST:/conversations": chSchemas.crearConversacion,
    // Mensajes
-  "POST:/api/conversations/:id/messages": chSchemas.enviarMensaje,
+  "POST:/conversations/:id/messages": chSchemas.enviarMensaje,
    // Asignacion de agente (URL pendiente de confirmar con backend)
-  "PATCH:/api/conversations/:id/agent": chSchemas.asignarAgente,
+  "PATCH:/conversations/:id/agent": chSchemas.asignarAgente,
    // Cambio de estado / cierre
-  "PATCH:/api/conversations/:id/status": chSchemas.cambiarEstado,
+  "PATCH:/conversations/:id/status": chSchemas.cambiarEstado,
    // Jobs internos
-  "POST:/api/internal/conversations/close-timeouts": chSchemas.cerrarPorInactividad,
+  "POST:/internal/conversations/close-timeouts": chSchemas.cerrarPorInactividad,
 
   //CHAT AUTOMATIZADO (soporte)
   // Sesiones
