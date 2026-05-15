@@ -85,32 +85,40 @@ const restaurantes = {
 };
 
 const logistica = {
+  // ── Entregas ────────────────────────────────────────────────────────────────
   crearEntrega: z.object({
-    tipo_origen: z.enum(['pedido', 'cotizacion', 'manual']),
+    tipo_origen: z.string().min(1),
     origen_id: z.number().int().positive(),
     empresa_id: z.number().int().positive(),
-    sucursal_id: z.number().int().positive().optional(),
+    sucursal_id: z.number().int().positive(),
     cliente_id: z.number().int().positive(),
     direccion_entrega: z.string().min(1),
     referencia_direccion: z.string().optional(),
     instrucciones_entrega: z.string().optional(),
-    monto_cobrar: z.number().min(0).optional(),
-    fecha_entrega_estimada: z.string().datetime({ offset: true }).optional()
+    monto_cobrar: z.number().positive()
   }),
   actualizarEntrega: z.object({
-    direccion_entrega: z.string().optional(),
+    direccion_entrega: z.string().min(1).optional(),
     referencia_direccion: z.string().optional(),
-    instrucciones_entrega: z.string().optional(),
-    monto_cobrar: z.number().min(0).optional(),
-    fecha_entrega_estimada: z.string().datetime({ offset: true }).optional()
+    instrucciones_entrega: z.string().optional()
   }),
   cambiarEstadoEntrega: z.object({
-    estado_nuevo: z.enum(['pendiente', 'asignada', 'en_ruta', 'entregada', 'fallida', 'cancelada']),
+    estado_entrega: z.enum([
+      "pendiente",
+      "asignada",
+      "en_ruta",
+      "recogida",
+      "entregada",
+      "cancelada"
+    ]),
     comentario: z.string().optional()
   }),
   cancelarEntrega: z.object({
-    comentario: z.string().optional()
+    motivo: z.string().min(1)
   }),
+  recogidaEntrega: z.object({}).optional(),
+  entregadaEntrega: z.object({}).optional(),
+  // ── Asignaciones ────────────────────────────────────────────────────────────
   asignarRepartidor: z.object({
     entrega_id: z.number().int().positive(),
     repartidor_id: z.number().int().positive()
@@ -119,19 +127,58 @@ const logistica = {
     repartidor_id: z.number().int().positive(),
     comentario: z.string().optional()
   }),
-  desasignarRepartidor: z.object({
-    comentario: z.string().optional()
-  }),
+  desasignarRepartidor: z.object({}).optional(),
+  // ── Incidencias ─────────────────────────────────────────────────────────────
   crearIncidencia: z.object({
     entrega_id: z.number().int().positive(),
-    repartidor_id: z.number().int().positive().optional().nullable(),
-    tipo_incidencia: z.enum(['direccion_incorrecta', 'cliente_ausente', 'paquete_danado', 'rechazo_cliente', 'accidente', 'otro']),
+    repartidor_id: z.number().int().positive(),
+    tipo_incidencia: z.enum([
+      "accidente",
+      "robo",
+      "paquete_daniado",
+      "cliente_ausente",
+      "direccion_incorrecta",
+      "otro"
+    ]),
     descripcion: z.string().min(1)
   }),
   actualizarIncidencia: z.object({
-    descripcion: z.string().optional(),
-    tipo_incidencia: z.enum(['direccion_incorrecta', 'cliente_ausente', 'paquete_danado', 'rechazo_cliente', 'accidente', 'otro']).optional()
-  })
+    tipo_incidencia: z.enum([
+      "accidente",
+      "robo",
+      "paquete_daniado",
+      "cliente_ausente",
+      "direccion_incorrecta",
+      "otro"
+    ]).optional(),
+    descripcion: z.string().min(1).optional()
+  }),
+  resolverIncidencia: z.object({
+    comentario_resolucion: z.string().min(1)
+  }),
+  reabrirIncidencia: z.object({
+    motivo: z.string().min(1)
+  }),
+  // ── Repartidores (self) ──────────────────────────────────────────────────────
+  actualizarUbicacion: z.object({
+    latitud: z.number().min(-90).max(90),
+    longitud: z.number().min(-180).max(180)
+  }),
+  actualizarEstadoRepartidor: z.object({
+    estado: z.enum(["disponible", "ocupado", "inactivo"])
+  }),
+  // ── Categorias ───────────────────────────────────────────────────────────────
+  crearCategoria: z.object({
+    nombre: z.string().min(1),
+    descripcion: z.string().optional()
+  }),
+  actualizarCategoria: z.object({
+    nombre: z.string().min(1).optional(),
+    descripcion: z.string().optional()
+  }),
+  toggleCategoria: z.object({}).optional(),
+  // ── Feed ─────────────────────────────────────────────────────────────────────
+  aceptarPedidoFeed: z.object({}).optional(),
 };
 
 const shipmentStatusEnum = z.enum(['pending', 'assigned', 'in_transit', 'delivered', 'cancelled']);

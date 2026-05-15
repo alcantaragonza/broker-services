@@ -35,15 +35,52 @@ const SCHEMA_MAP = {
   "POST:/restaurantes/:id/pedidos/:pid/cancelacion/cancelar":
     rSchemas.cancelarPedido,
   // LOGISTICA
-  "POST:/logistica/entregas": lSchemas.crearEntrega,
-  "PUT:/logistica/entregas/:id": lSchemas.actualizarEntrega,
-  "PATCH:/logistica/entregas/:id/estado": lSchemas.cambiarEstadoEntrega,
-  "PATCH:/logistica/entregas/:id/cancelar": lSchemas.cancelarEntrega,
-  "POST:/logistica/asignaciones": lSchemas.asignarRepartidor,
-  "PUT:/logistica/asignaciones/entrega/:id": lSchemas.reasignarRepartidor,
-  "DELETE:/logistica/asignaciones/entrega/:id": lSchemas.desasignarRepartidor,
-  "POST:/logistica/incidencias": lSchemas.crearIncidencia,
-  "PUT:/logistica/incidencias/:id": lSchemas.actualizarIncidencia,
+  // ── Entregas ─────────────────────────────────────────────────────────────────
+  "POST:/logistica/entregas":
+    lSchemas.crearEntrega,
+  "POST:/logistica/entregas/restaurantes/:restaurante_id/pedidos/:pedido_id":
+    lSchemas.crearEntrega,           // body vacío desde el pedido ya existente — schema permisivo
+  "PUT:/logistica/entregas/:id":
+    lSchemas.actualizarEntrega,
+  "PATCH:/logistica/entregas/:id/estado":
+    lSchemas.cambiarEstadoEntrega,
+  "PATCH:/logistica/entregas/:id/cancelar":
+    lSchemas.cancelarEntrega,
+  "PATCH:/logistica/entregas/:id/recogida":
+    lSchemas.recogidaEntrega,
+  "PATCH:/logistica/entregas/:id/entregada":
+    lSchemas.entregadaEntrega,
+  // ── Asignaciones ─────────────────────────────────────────────────────────────
+  "POST:/logistica/asignaciones":
+    lSchemas.asignarRepartidor,
+  "PUT:/logistica/asignaciones/entrega/:id":
+    lSchemas.reasignarRepartidor,
+  "DELETE:/logistica/asignaciones/entrega/:id":
+    lSchemas.desasignarRepartidor,
+  // ── Incidencias ───────────────────────────────────────────────────────────────
+  "POST:/logistica/incidencias":
+    lSchemas.crearIncidencia,
+  "PUT:/logistica/incidencias/:id":
+    lSchemas.actualizarIncidencia,
+  "PATCH:/logistica/incidencias/:id/resolver":
+    lSchemas.resolverIncidencia,
+  "PATCH:/logistica/incidencias/:id/reabrir":
+    lSchemas.reabrirIncidencia,
+  // ── Repartidores ──────────────────────────────────────────────────────────────
+  "PATCH:/logistica/repartidores/me/ubicacion":
+    lSchemas.actualizarUbicacion,
+  "PATCH:/logistica/repartidores/me/estado":
+    lSchemas.actualizarEstadoRepartidor,
+  // ── Categorias ────────────────────────────────────────────────────────────────
+  "POST:/logistica/categorias":
+    lSchemas.crearCategoria,
+  "PUT:/logistica/categorias/:id":
+    lSchemas.actualizarCategoria,
+  "PATCH:/logistica/categorias/:id/toggle":
+    lSchemas.toggleCategoria,
+  // ── Feed ──────────────────────────────────────────────────────────────────────
+  "PATCH:/logistica/feed/:id/aceptar":
+    lSchemas.aceptarPedidoFeed,
   // PAQUETERIA
   //USERS (/paqueteria/users
   'POST:/paqueteria/users': pSchemas.crearUsuario,
