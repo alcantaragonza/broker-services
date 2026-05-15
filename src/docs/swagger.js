@@ -17,6 +17,10 @@ const swaggerDefinition = {
       url: "http://localhost:3000",
       description: "Servidor local de desarrollo",
     },
+    {
+        url: "https://broker-services-production.up.railway.app",
+        description: "Servidor de producción en Railway",
+    }
   ],
   tags: [
     { name: "🔵 Logística — Feed", description: "Feed de pedidos disponibles para repartidores" },
