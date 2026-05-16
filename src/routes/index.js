@@ -109,34 +109,34 @@ const SCHEMA_MAP = {
   'PUT:/paqueteria/courier-statuses/:id': pSchemas.actualizarRegistroEstado,
 
   //COBROS
-  "POST:/payments/calculate": cSchemas.calcularTotal,
-  "POST:/payments": cSchemas.crearPago,
-  "POST:/wallet/pay-pending": cSchemas.pagarPendiente,
+  "POST:/cobros/payments/calculate": cSchemas.calcularTotal,
+  "POST:/cobros/payments": cSchemas.crearPago,
+  "POST:/cobros/wallet/pay-pending": cSchemas.pagarPendiente,
 
   //CHAT SERVICIO AL CLIENTE
-    // Horarios de atencion
+  // Horarios de atencion
   "POST:/availability": chSchemas.crearHorario,
   "PATCH:/availability/:id": chSchemas.actualizarHorario,
-   // Conversaciones
+  // Conversaciones
   "POST:/conversations": chSchemas.crearConversacion,
-   // Mensajes
+  // Mensajes
   "POST:/conversations/:id/messages": chSchemas.enviarMensaje,
-   // Asignacion de agente (URL pendiente de confirmar con backend)
+  // Asignacion de agente (URL pendiente de confirmar con backend)
   "PATCH:/conversations/:id/agent": chSchemas.asignarAgente,
-   // Cambio de estado / cierre
+  // Cambio de estado / cierre
   "PATCH:/conversations/:id/status": chSchemas.cambiarEstado,
-   // Jobs internos
+  // Jobs internos
   "POST:/internal/conversations/close-timeouts": chSchemas.cerrarPorInactividad,
 
   //CHAT AUTOMATIZADO (soporte)
   // Sesiones
-  "POST:/soporte/session":                caSchemas.iniciarSesion,
-  "POST:/soporte/session/message":        caSchemas.enviarMensaje,
+  "POST:/soporte/session": caSchemas.iniciarSesion,
+  "POST:/soporte/session/message": caSchemas.enviarMensaje,
   // FAQs
-  "POST:/soporte/faqs":                   caSchemas.crearFaq,
-  "PATCH:/soporte/faqs/:id":              caSchemas.actualizarFaq,
+  "POST:/soporte/faqs": caSchemas.crearFaq,
+  "PATCH:/soporte/faqs/:id": caSchemas.actualizarFaq,
   // Solicitudes de soporte
-  "PATCH:/soporte/support/:id/status":    caSchemas.actualizarSolicitud,
+  "PATCH:/soporte/support/:id/status": caSchemas.actualizarSolicitud,
   // Escalaciones
   "PATCH:/soporte/escalation/:id/status": caSchemas.actualizarEscalacion,
 };
