@@ -1606,7 +1606,7 @@ const swaggerDefinition = {
     },
 
     // Payments
-    "/api/payments/calculate": {
+    "/api/cobros/payments/calculate": {
       post: {
         tags: ["🔴 Cobros — Payments"],
         summary: "Calcular total del pedido",
@@ -1625,7 +1625,7 @@ const swaggerDefinition = {
         },
       },
     },
-    "/api/payments": {
+    "/api/cobros/payments": {
       post: {
         tags: ["🔴 Cobros — Payments"],
         summary: "Crear pago",
@@ -1669,7 +1669,7 @@ const swaggerDefinition = {
         },
       },
     },
-    "/api/payments/{paymentId}": {
+    "/api/cobros/payments/{paymentId}": {
       get: {
         tags: ["🔴 Cobros — Payments"],
         summary: "Obtener pago por ID",
@@ -1691,7 +1691,7 @@ const swaggerDefinition = {
         },
       },
     },
-    "/api/payments/{paymentId}/cancel": {
+    "/api/cobros/payments/{paymentId}/cancel": {
       patch: {
         tags: ["🔴 Cobros — Payments"],
         summary: "Cancelar pago",
@@ -1714,7 +1714,7 @@ const swaggerDefinition = {
         },
       },
     },
-    "/api/payments/{paymentId}/refund": {
+    "/api/cobros/payments/{paymentId}/refund": {
       post: {
         tags: ["🔴 Cobros — Payments"],
         summary: "Reembolsar pago",
@@ -1741,7 +1741,7 @@ const swaggerDefinition = {
     },
 
     // Wallet
-    "/api/wallet/summary": {
+    "/api/cobros/wallet/summary": {
       get: {
         tags: ["🔴 Cobros — Wallet"],
         summary: "Resumen del wallet del courier",
@@ -1780,7 +1780,7 @@ const swaggerDefinition = {
         },
       },
     },
-    "/api/wallet/pay-pending": {
+    "/api/cobros/wallet/pay-pending": {
       post: {
         tags: ["🔴 Cobros — Wallet"],
         summary: "Liquidar deuda pendiente en efectivo",
